@@ -7,7 +7,7 @@ Summary: Programs for backing up and restoring ext2/ext3 filesystems
 Name: dump
 Epoch: 1
 Version: 0.4
-Release: 0.5.%{PREVER}%{?dist}
+Release: 0.6.%{PREVER}%{?dist}
 License: BSD
 Group: Applications/Archiving
 URL: http://dump.sourceforge.net/
@@ -25,6 +25,9 @@ Provides: dump-static
 
 Patch0: dump-rh507948.patch
 Patch1: dump-rh599680.patch
+Patch2: dump-rh702593.patch
+Patch3: dump-rh658890.patch
+Patch4: dump-rh691434.patch
 
 %description
 The dump package contains both dump and restore. Dump examines files
@@ -52,6 +55,9 @@ restoring files from a backup), and tar (an archiving program).
 
 %patch0 -p1 -b .rh507948
 %patch1 -p1 -b .rh599680
+%patch2 -p1 -b .rh702593
+%patch3 -p1 -b .rh658890
+%patch4 -p0 -b .rh691434
 
 for i in THANKS MAINTAINERS COPYRIGHT CHANGES; do
     iconv -f iso-8859-1 -t utf-8  $i -o $i.new
@@ -124,6 +130,11 @@ rm -rf %{buildroot}
 %{_mandir}/man8/rmt.8*
 
 %changelog
+* Tue Jun 28 2011 Adam Tkac <atkac redhat com> 0.4-0.6.b42
+- call clone(2) syscall with correct args on s390
+- `dump -w` didn't recognize ext4 filesystems as supported (#658890)
+- fix incorrect hole handling (#691434)
+
 * Mon Jun 14 2010 Adam Tkac <atkac redhat com> 0.4-0.5.b42
 - dump: write EA metadata to tape correctly (#599680)
 - restore: add a workaround to read incorrectly written EA metadata (#599680)
