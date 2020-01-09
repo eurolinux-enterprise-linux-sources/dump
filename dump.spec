@@ -5,7 +5,7 @@ Summary: Programs for backing up and restoring ext2/ext3 filesystems
 Name: dump
 Epoch: 1
 Version: 0.4
-Release: 0.19.%{PREVER}%{?dist}
+Release: 0.22.%{PREVER}%{?dist}
 License: BSD
 Group: Applications/Archiving
 URL: http://dump.sourceforge.net/
@@ -24,6 +24,7 @@ Provides: dump-static
 Patch0: dump-buildfix.patch
 Patch1: dump-rh664616.patch
 Patch2: dump-aarch64.patch
+Patch3: dump-rmt-moved-star.patch
 
 %description
 The dump package contains both dump and restore. Dump examines files
@@ -37,21 +38,13 @@ directory subtrees may also be restored from full or partial backups.
 Install dump if you need a system for both backing up filesystems and
 restoring filesystems after backups.
 
-%package -n rmt
-Summary: Provides certain programs with access to remote tape devices
-Group: Applications/Archiving
-
-%description -n rmt
-The rmt utility provides remote access to tape devices for programs
-like dump (a filesystem backup program), restore (a program for
-restoring files from a backup), and tar (an archiving program).
-
 %prep
 %setup -q -n dump-%{VERSION}
 
 %patch0 -p1 -b .buildfix
 %patch1 -p1 -b .rh664616
 %patch2 -p1 -b .aarch64
+%patch3 -p1 -b .rmt-moved-star
 
 for i in THANKS MAINTAINERS COPYRIGHT CHANGES; do
     iconv -f iso-8859-1 -t utf-8  $i -o $i.new
@@ -68,8 +61,8 @@ export CFLAGS="$RPM_OPT_FLAGS -Wall -Wpointer-arith -Wstrict-prototypes \
 # XXX --enable-kerberos needs krcmd
 %configure --disable-static \
     --enable-transselinux \
-    --enable-rmt \
     --enable-largefile \
+    --disable-rmt \
     --enable-qfa \
     --enable-readline \
     --with-binmode=0755 \
@@ -96,10 +89,8 @@ mkdir -p %{buildroot}%{_mandir}/man8
 pushd %{buildroot}
     ln -sf dump .%{_sbindir}/rdump
     ln -sf restore .%{_sbindir}/rrestore
-    chmod ug-s .%{_sbindir}/rmt
     mkdir -p .%{_sysconfdir}
     > .%{_sysconfdir}/dumpdates
-    ln -sf ..%{_sbindir}/rmt .%{_sysconfdir}/rmt
 popd
 
 %clean
@@ -119,14 +110,16 @@ rm -rf %{buildroot}
 %{_mandir}/man8/restore.8*
 %{_mandir}/man8/rrestore.8*
 
-%files -n rmt
-%defattr(-,root,root)
-%doc COPYRIGHT
-%{_sbindir}/rmt
-%{_sysconfdir}/rmt
-%{_mandir}/man8/rmt.8*
-
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1:0.4-0.22.b44
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1:0.4-0.21.b44
+- Mass rebuild 2013-12-27
+
+* Tue Jun 04 2013 Petr Hracek <phracek@redhat.com> - 1:0.4-0.20.b44
+- Move rmt into star package (#968995)
+
 * Wed Apr 17 2013 Petr Hracek <phracek@redhat.com> - 1:0.4-0.19.b44
 - Support aarch64 (#925282)
 

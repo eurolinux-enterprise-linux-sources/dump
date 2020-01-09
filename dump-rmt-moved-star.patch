@@ -1,0 +1,10 @@
+diff --git a/compat/include/pathnames.h b/compat/include/pathnames.h
+index 281d204..2f2885a 100644
+--- a/compat/include/pathnames.h
++++ b/compat/include/pathnames.h
+@@ -54,4 +54,4 @@
+ #endif
+ #endif
+ 
+-#define	_PATH_RMT	"/etc/rmt"		/* path on remote host */
++#define	_PATH_RMT	"/usr/sbin/rmt"		/* path on remote host */
