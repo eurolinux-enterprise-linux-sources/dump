@@ -1,0 +1,24 @@
+# $Id: Makefile.in,v 1.4 2003/01/24 11:01:48 stelian Exp $
+
+top_srcdir=	@top_srcdir@
+srcdir=		@srcdir@
+top_builddir=	../..
+
+@MCONFIG@
+
+all::
+
+install::
+
+clean::
+	$(RM) -f \#* *~ core
+
+distclean::	clean
+	$(RM) -f Makefile Makefile.old .depend
+
+# +++ Dependency line eater +++
+# 
+# Makefile dependencies follow.  This must be the last section in
+# the Makefile.in file
+#
+
