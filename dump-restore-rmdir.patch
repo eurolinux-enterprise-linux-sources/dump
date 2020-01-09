@@ -1,0 +1,12 @@
+diff -urNp old/restore/restore.c new/restore/restore.c
+--- old/restore/restore.c	2017-08-30 09:44:50.912572953 +0200
++++ new/restore/restore.c	2017-08-30 09:45:48.770347062 +0200
+@@ -593,7 +593,7 @@ findunreflinks(void)
+ 					if (np->e_type == LEAF) {
+ 						removeleaf(np);
+ 						freeentry(np);
+-					} else {
++					} else if (np->e_ino != 0){
+ 						np->e_flags |= TMPNAME;
+ 						deleteino(np->e_ino);
+ 						np->e_next = removelist;

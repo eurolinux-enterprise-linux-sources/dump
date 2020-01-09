@@ -5,7 +5,7 @@ Summary: Programs for backing up and restoring ext2/ext3 filesystems
 Name: dump
 Epoch: 1
 Version: 0.4
-Release: 0.22.%{PREVER}%{?dist}
+Release: 0.23.%{PREVER}%{?dist}
 License: BSD
 Group: Applications/Archiving
 URL: http://dump.sourceforge.net/
@@ -25,6 +25,7 @@ Patch0: dump-buildfix.patch
 Patch1: dump-rh664616.patch
 Patch2: dump-aarch64.patch
 Patch3: dump-rmt-moved-star.patch
+Patch4: dump-restore-rmdir.patch
 
 %description
 The dump package contains both dump and restore. Dump examines files
@@ -45,6 +46,7 @@ restoring filesystems after backups.
 %patch1 -p1 -b .rh664616
 %patch2 -p1 -b .aarch64
 %patch3 -p1 -b .rmt-moved-star
+%patch4 -p1 -b .restore-rmdir
 
 for i in THANKS MAINTAINERS COPYRIGHT CHANGES; do
     iconv -f iso-8859-1 -t utf-8  $i -o $i.new
@@ -111,6 +113,9 @@ rm -rf %{buildroot}
 %{_mandir}/man8/rrestore.8*
 
 %changelog
+* Wed Aug 30 2017 Josef Ridky <jridky@redhat.com> - 1:0.4-0.23.b44
+- fix issue with restoring incremental dump when a directory was removed (#1183264)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1:0.4-0.22.b44
 - Mass rebuild 2014-01-24
 
